@@ -1,4 +1,4 @@
-#System files (Do NOT modify):
+# System files (Do NOT modify):
 openai-env:
 Virtual environments are used to manage dependencies for Python projects, ensuring that libraries and packages are isolated from those in other projects.
 
@@ -12,7 +12,7 @@ virtual environment.txt:
 This file contain commands setting up the virtual environment.
 
 
-#Development Files (Files you need to work on):
+# Development Files (Files you need to work on):
 templates (front-end):
 This directory contains HTML template files for a Flask web application. These files are used to render web pages dynamically.
 
