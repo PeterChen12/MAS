@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with GPT-4</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat-box { width: 100%; max-width: 600px; margin: auto; }
+        #messages { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; margin-bottom: 10px; }
+        .message { margin-bottom: 10px; }
+        .user { font-weight: bold; }
+        .bot { color: blue; }
+    </style>
+</head>
+<body>
+    <div id="chat-box">
+        <div id="messages"></div>
+        <form id="chat-form">
+            <input type="text" id="user-message" placeholder="Type your message here..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            async function sendMessage(event) {
+                event.preventDefault();
+                const userMessage = document.getElementById('user-message').value;
+                document.getElementById('user-message').value = '';
+                
+                // Display user's message
+                const userDiv = document.createElement('div');
+                userDiv.className = 'message user';
+                userDiv.textContent = `User: ${userMessage}`;
+                document.getElementById('messages').appendChild(userDiv);
+                
+                // Send user's message to the server and get the bot's response
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Display bot's response
+                    const botDiv = document.createElement('div');
+                    botDiv.className = 'message bot';
+                    botDiv.textContent = `Bot: ${data.message}`;
+                    document.getElementById('messages').appendChild(botDiv);
+                    
+                    // Scroll to the bottom of the chat box
+                    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+                } else {
+                    console.error("Error with the fetch request:", response.statusText);
+                }
+            }
+
+            document.getElementById('chat-form').addEventListener('submit', sendMessage);
+        });
+    </script>
+</body>
+</html>
